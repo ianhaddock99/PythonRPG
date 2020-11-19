@@ -4,7 +4,7 @@
 
 # 1. fight goblin
 # 2. do nothing - in which case the goblin will attack him anyway
-# 3. flee
+# 3. fleeasdaksjdhasdjk
 class Hero:
     def __init__(self, health, power):
         self.health = health
