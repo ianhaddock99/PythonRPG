@@ -7,14 +7,14 @@ class Character:
         self.power = power
 
     def attack(self, enemy, double_power):
-        doNotAttack= False
+        doNotAttack = False
         if enemy.character_name == "shadow":
             enemy.shadow_dodge()
             doNotAttack = enemy.dodge
 
         if enemy.character_name == "warrior":
             berserk = random.random() > 0.2
-            rnddmg =random.randint(1,10)
+            rnddmg =random.randint(1,11)
             if berserk == True:
                 hero.health -= rnddmg
                 print(f"Berserker rage, {rnddmg} extra damage done to hero.")
@@ -141,4 +141,4 @@ def main(enemy):
             if not hero.alive():
                 print("You are dead.")
 
-main(goblin)
+main(warrior)
