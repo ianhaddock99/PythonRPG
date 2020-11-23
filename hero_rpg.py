@@ -1,141 +1,42 @@
-#!/usr/bin/env python
 
-# In this simple RPG game, the hero fights the goblin. He has the options to:
-
-# 1. fight goblin
-# 2. do nothing - in which case the goblin will attack him anyway
-# 3. fleeasdaksjdhasdjk
-# class Character:
-#     def __init__(self, name, health, power):
-#         self.health = health
-#         self.power = power
-#         self.name = name
-    
-#     def attack(self, enemy):
-#         Hero attacks goblin
-#         enemy.health -= self.power
-#         self.__class__.__name__
-
-#     def alive(self):
-#         if self.health > 0:
-#             return True
-#         else:
-#             return False
-    
-#     def print_status(self):
-#         print(f"{self.name} has {self.health} health and {self.power} power.")
-
-# class Hero:
-#     def __init__(self, health, power):
-#         self.health = health
-#         self.power = power
-    
-#     def attack(self, enemy):
-#         # Hero attacks goblin
-#         enemy.health -= self.power
-    
-#     def alive(self):
-#         if self.health > 0:
-#             return True
-#         else:
-#             return False
-    
-#     def print_status(self):
-#         print("You have {} health and {} power.".format(self.health, self.power))
-
-    
-        
-
-# class Goblin:
-#     def __init__(self, health, power):
-#         self.health = health
-#         self.power = power
-    
-#     def attack(self, enemy):
-#         # Goblin attacks hero
-#         enemy.health -= self.power
-    
-#     def alive(self):
-#         if self.health > 0:
-#             return True
-#         else:
-#             return False
-    
-#     def print_status(self):
-#         print("The goblin has {} health and {} power.".format(self.health, self.power))
-
-    
-
-
-# def main():
-#     hero = Character("Hero", 10, 5)
-#     goblin = Character("Goblin", 6, 2)
-#     zombie = Character("Zombie", 6, 2)
-
-#     while goblin.alive() and hero.alive(): #and zombie.alive():
-#         hero.print_status()
-#         goblin.print_status()
-#         zombie.print_status()
-#         print()
-#         print("What do you want to do?")
-#         print("1. fight goblin")
-#         print("2. do nothing")
-#         print("3. flee")
-#         print("4. fight zombie")
-#         print("> ", end=' ')
-#         raw_input = input()
-#         if raw_input == "1":
-#             Hero attacks goblin
-#             hero.attack(goblin)
-#             print(f"You do {hero.power} damage to the goblin.")
-#             if not goblin.alive():
-#                 print("The goblin is dead.")
-#         elif raw_input == "2":
-#             pass
-#         elif raw_input == "4":
-#             hero.attack(zombie)
-#             if not goblin.alive():
-#                 print("The goblin is dead.")
-#         elif raw_input == "3":
-#             print("Goodbye.")
-#             break
-#         else:
-#             print(f"Invalid input {raw_input}")
-
-#         if goblin.alive():
-#             goblin.attack(hero)
-#             print(f"The goblin does {goblin.power} damage to you.")
-#             if not hero.alive():
-#                 print("You are dead.")
-        
-#         if zombie.alive():
-#             zombie.attack(hero)
-#             print(f"The goblin does {zombie.power} damage to you.")
-#             if not hero.alive():
-#                 print("You are dead.")
-
-# main()
-
-#+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++#
+import random
 
 class Character:
     def __init__(self, health, power):
         self.health = health
         self.power = power
-    
-    
-    # def attack(self, enemy):
-    #     # Hero attacks goblin
-    #     enemy.health -= self.power
 
-    def attack(self, enemy):
-        # Hero attacks goblin
-        if enemy.character_name != "zombie":
-            enemy.health -= self.power
+    def attack(self, enemy, double_power):
+        doNotAttack= False
+        if enemy.character_name == "shadow":
+            enemy.shadow_dodge()
+            doNotAttack = enemy.dodge
+
+        if enemy.character_name == "warrior":
+            berserk = random.random() > 0.2
+            rnddmg =random.randint(1,10)
+            if berserk == True:
+                hero.health -= rnddmg
+                print(f"Berserker rage, {rnddmg} extra damage done to hero.")
+
+        if enemy.character_name == "medic":
+            firstaid = random.random() > 0.8
+            if firstaid:
+                enemy.health += 2
+                print("Medic has healed for 2 health.")
+                
+        if doNotAttack == False:
+            if double_power == True:
+                enemy.health -= (self.power * 2)
+            else:
+                enemy.health -= self.power
 
         if(self.character_name == "hero"):
-            print(f"You do {self.power} damage to the {enemy.character_name}.")
-        elif(self.character_name == "goblin" or self.character_name == "zombie"):
+            if double_power == True:
+                print(f"You do {self.power * 2} damage to the {enemy.character_name}.")
+            else:    
+                print(f"You do {self.power} damage to the {enemy.character_name}.")
+        elif(self.character_name == "goblin" or self.character_name == "zombie" or self.character_name == "medic" or self.character_name == "shadow" or self.character_name == "warrior"):
             print(f"The {self.character_name} does {self.power} damage to you.")
 
     def alive(self):
@@ -147,7 +48,7 @@ class Character:
     def print_status(self):
         if self.character_name == "hero":
             print(f"You have {self.health} health and {self.power} power.")
-        elif self.character_name == "goblin" or self.character_name == "zombie":
+        elif self.character_name == "goblin" or self.character_name == "zombie" or self.character_name == "medic" or self.character_name == "shadow" or self.character_name == "warrior":
             print(f"The {self.character_name} has {self.health} health and {self.power} power.")
 
 
@@ -155,6 +56,10 @@ class Hero(Character):
     def __init__(self, health, power):
         self.character_name = "hero"
         super(Hero, self).__init__(health, power)
+
+    def apply(self):
+        hero.health += 10
+        print("Hero health increased by 10.")
 
 class Goblin(Character):
     def __init__(self, health, power):
@@ -166,9 +71,40 @@ class Zombie(Character):
         self.character_name = "zombie"
         super(Zombie, self).__init__(health, power)
 
-hero = Hero( 10, 5)
-goblin = Goblin(6, 2)
+    def alive(self):
+        return True
+
+class Medic(Character):
+    def __init__(self, health, power):
+        self.character_name = "medic"
+        super(Medic, self).__init__(health, power)
+
+class Shadow(Character):
+    dodge = False
+    def __init__(self, health, power):
+        self.character_name = "shadow"
+        super(Shadow, self).__init__(health, power)
+
+    def shadow_dodge(self):    
+        shadowdodge = random.random() > 0.1
+        if shadowdodge:
+            print("Shadow has dodged your attack.")
+            self.dodge = True
+        else:
+            self.dodge = False   
+
+class Warrior(Character):
+    def __init__(self, health, power):
+        self.character_name = "warrior"
+        super(Warrior, self).__init__(health, power)
+
+
+hero = Hero(100, 2)
+goblin = Goblin(100, 2)
 zombie = Zombie(10, 1)
+shadow = Shadow(100, 2)
+medic = Medic(100, 1)
+warrior = Warrior(100, 2)
 
 def main(enemy):
 
@@ -177,28 +113,32 @@ def main(enemy):
         enemy.print_status()
         print()
         print("What do you want to do?")
-        print(f"1. fight {enemy.character_name}")
-        print("2. do nothing")
-        print("3. flee")
+        print(f"1. Fight {enemy.character_name}")
+        print("2. Do Nothing")
+        print("3. Use Tonic")
+        print("4. Flee")
         print("> ", end=' ')
         raw_input = input()
+
         if raw_input == "1":
-            # Hero attacks goblin
-            hero.attack(enemy)
+            double_power = random.random() > 0.8
+            hero.attack(enemy, double_power)
 
             if not enemy.alive():
                 print(f"The {enemy.character_name} is dead.")
         elif raw_input == "2":
             pass
         elif raw_input == "3":
+            hero.apply()
+        elif raw_input == "4":
             print("Goodbye.")
             break
         else:
             print(f"Invalid input {raw_input}")
 
         if enemy.alive():
-            enemy.attack(hero)
+            enemy.attack(hero, False)
             if not hero.alive():
                 print("You are dead.")
 
-main(zombie)
+main(goblin)
