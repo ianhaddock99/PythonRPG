@@ -106,6 +106,8 @@ shadow = Shadow(100, 2)
 medic = Medic(100, 1)
 warrior = Warrior(100, 2)
 
+enemies = [goblin, zombie, shadow, medic, warrior]
+
 def main(enemy):
 
     while enemy.alive() > 0 and hero.alive():
@@ -141,4 +143,5 @@ def main(enemy):
             if not hero.alive():
                 print("You are dead.")
 
-main(warrior)
+
+main(enemies[random.randint(0,4)])
